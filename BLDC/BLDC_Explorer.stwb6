@@ -1,7 +1,9 @@
 {
+  "version": 7,
   "algorithm": "sixStep",
   "description": "",
-  "checkList": {},
+  "workBenchVersion": "6.4.1",
+  "workBenchVersionFileCreation": "6.3.2",
   "hardwares": {
     "type": "CUSTOM",
     "control": {
@@ -2020,9 +2022,7 @@
     },
     "bridges": []
   },
-  "version": 13,
-  "workBenchVersion": "6.3.2",
-  "workBenchVersionFileCreation": "6.3.2",
+  "checkList": {},
   "details": {
     "steps": {
       "powerSupply_0": {
@@ -2060,7 +2060,9 @@
         "quadratureEncoder": {
           "pulsesPerMechanicalRevolution": "Number.NaN",
           "hasIndexPin": false
-        }
+        },
+        "nominalCurrent": "Number.NaN",
+        "nominalDCVoltage": "Number.NaN"
       },
       "powerSwitches_0": {
         "setting": {

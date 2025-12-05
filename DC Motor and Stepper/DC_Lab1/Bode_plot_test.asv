@@ -1,0 +1,68 @@
+%% 1. โหลดข้อมูลและเตรียมตัวแปร
+% (ข้ามบรรทัดนี้ถ้ามีตัวแปร raw_w และ w ใน Workspace แล้ว)
+load('ValueForBodePlot.mat); 
+
+% กำหนด Input และ Output (เปลี่ยนชื่อตัวแปรทางขวาให้ตรงกับของคุณ)
+data_in = squeeze(data{2}.Values.Data);  % สัญญาณก่อนเข้า Filter (Input)
+data_out = squeeze(data{3}.Values.Data);     % สัญญาณหลังเข้า Filter (Output)
+
+% ดึงค่า Data และ Time (รองรับทั้ง Timeseries และ Array)
+if isa(data_in, 'timeseries')
+    u = data_in.Data;
+    t = data_in.Time;
+elseif isstruct(data_in) && isfield(data_in,'signals') % กรณีเป็น Structure with time
+    u = data_in.signals.values;
+    t = data_in.time;
+else
+    u = data_in; % กรณีเป็น Array ล้วน
+    % t = ...; % ต้องมีตัวแปรเวลา t หรือรู้ Sampling Time
+end
+
+if isa(data_out, 'timeseries')
+    y = data_out.Data;
+elseif isstruct(data_out) && isfield(data_out,'signals')
+    y = data_out.signals.values;
+else
+    y = data_out;
+end
+
+% ตรวจสอบขนาดข้อมูลให้เท่ากัน
+len = min(length(u), length(y));
+u = u(1:len);
+y = y(1:len);
+
+%% 2. คำนวณ Frequency Response (Transfer Function Estimate)
+% คำนวณ Sampling Frequency (Fs) จาก Time vector
+if exist('t', 'var')
+    Ts = mean(diff(t)); 
+    Fs = 1/Ts;
+else
+    Fs = 10000; % ! ใส่ค่า Sampling Frequency ของคุณที่นี่ (Hz) ถ้าไม่มีตัวแปร t
+end
+
+% ใช้ฟังก์ชัน tfestimate หาค่า Transfer Function
+% [TransferFunction, FrequencyVector] = tfestimate(input, output, window, noverlap, nfft, fs)
+[H, f] = tfestimate(u, y, [], [], [], Fs);
+
+%% 3. พลอตกราฟ Bode Plot
+figure('Name', 'Estimated Bode Plot');
+
+% Magnitude Plot (dB)
+subplot(2,1,1);
+mag_db = 20*log10(abs(H));
+semilogx(f, mag_db, 'b', 'LineWidth', 1.5);
+grid on;
+title('Bode Plot: Magnitude');
+ylabel('Magnitude (dB)');
+xlabel('Frequency (Hz)');
+xlim([min(f(f>0)) max(f)]); % ตัดช่วงความถี่ 0 Hz ออกเพื่อให้กราฟ log ดูสวย
+
+% Phase Plot (Degree)
+subplot(2,1,2);
+phase_deg = rad2deg(unwrap(angle(H))); % ใช้ unwrap เพื่อให้กราฟต่อเนื่อง
+semilogx(f, phase_deg, 'r', 'LineWidth', 1.5);
+grid on;
+title('Bode Plot: Phase');
+ylabel('Phase (Degrees)');
+xlabel('Frequency (Hz)');
+xlim([min(f(f>0)) max(f)]);

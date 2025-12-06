@@ -6,7 +6,9 @@
 %       ω(τ_L) = ω_NL * (1 - τ_L / T_st)
 %       i(τ_L) = i_NL + (i_ST - i_NL)*(τ_L / T_st)
 %       P_out(τ_L) = τ_L * ω(τ_L)
-%       η(τ_L) = P_out / (V_in * i)
+%       η(τ_L) = [ -ω_NL/τ_ST * τ_L^2 + ω_NL τ_L ]
+%                ----------------------------------------
+%                [ (i_ST - i_NL)/τ_ST * τ_L V_in + i_NL V_in ]
 %
 %   Given (Measured from Experiment):
 %       T_st   = 0.1699  N·m       (Stall Torque)
@@ -41,15 +43,17 @@ P_out = tauL .* omega;
 [~, idxP] = max(P_out);
 P_max = P_out(idxP);
 
-%% ---------------------- 4. Efficiency ----------------------------------
-P_in = V_in .* i;
-eta = P_out ./ P_in;
+%% ---------------------- 4. Efficiency (Correct Formula) ----------------
+num = -(omega_NL ./ T_st) .* (tauL.^2) + omega_NL .* tauL;   % numerator
+den = ((i_ST - i_NL) ./ T_st) .* tauL .* V_in + i_NL .* V_in; % denominator
+
+eta = num ./ den;
 
 %% ---------------------- Plotting --------------------------------------
 figure('Color','w','Position',[200 100 1100 780]);
 
 sgtitle('DC Motor 12V Characteristics', ...
-        'FontSize', 16, 'FontWeight','bold');   % << MAIN TITLE
+        'FontSize', 16, 'FontWeight','bold');
 
 % ---------------- (1) Speed vs Torque ----------------------------------
 subplot(2,2,1);
@@ -72,7 +76,6 @@ xlabel('Load Torque \tau_L (N·m)', 'FontWeight','bold');
 ylabel('Output Power P_{out} (W)', 'FontWeight','bold');
 title('Output Power vs Load Torque', 'FontWeight','bold', 'FontSize', 12);
 
-% Mark Maximum Power (dot instead of circle)
 plot(tauL(idxP), P_out(idxP), '.', 'MarkerSize', 22, 'Color', 'r');
 text(tauL(idxP), P_out(idxP), sprintf('  P_{max} = %.2f W', P_max), ...
      'FontWeight','bold');

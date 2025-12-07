@@ -62,7 +62,7 @@ sgtitle('DC Motor 12V Characteristics', 'FontSize', 16, 'FontWeight','bold');
 % (1) Speed–Torque
 subplot(2,2,1);
 plot(tauL, omega, 'LineWidth', 1.8); grid on;
-xlabel('\tau_L (N·m)'), ylabel('Anugular Velocity \omega (rad/s)');
+xlabel('\tau_L (N·m)'), ylabel('\omega (rad/s)');
 title('Speed–Torque Characteristic');
 
 % (2) Current–Torque
@@ -76,14 +76,15 @@ subplot(2,2,3);
 plot(tauL, P_out, 'LineWidth', 1.8); grid on; hold on;
 xlabel('Load Torque \tau_L (N·m)', 'FontWeight','bold');
 ylabel('Output Power P_{out} (W)', 'FontWeight','bold');
-title('Power-Torque Characteristic', 'FontWeight','bold', 'FontSize', 12);
+title('Output Power vs Load Torque', 'FontWeight','bold', 'FontSize', 12);
 
 % Mark and label max power point
 plot(tau_Pmax, P_max, 'ro', 'MarkerSize', 8, 'MarkerFaceColor','r');
 
 text(tau_Pmax, P_max, ...
-     sprintf('\\leftarrow Max Power:  %.3f W,  %.4f N·m', P_max, tau_Pmax), ...
+     sprintf('\\leftarrow Max Power:  %.4f N·m,  %.3f W', tau_Pmax, P_max), ...
      'FontWeight','bold', 'HorizontalAlignment','left', 'VerticalAlignment','bottom');
+
 
 
 % ---------------- (4) Efficiency vs Torque ------------------------------
@@ -91,14 +92,10 @@ subplot(2,2,4);
 plot(tauL, eta, 'LineWidth', 1.8); grid on; hold on;
 xlabel('Load Torque \tau_L (N·m)', 'FontWeight','bold');
 ylabel('Efficiency \eta', 'FontWeight','bold');
-title('Efficiency-Torque Characteristic', 'FontWeight','bold', 'FontSize', 12);
+title('Efficiency vs Load Torque', 'FontWeight','bold', 'FontSize', 12);
 
 % Mark and label max efficiency point
 plot(tau_Emax, eta_max, 'ro', 'MarkerSize', 8, 'MarkerFaceColor','r');
-
-text(tau_Emax, eta_max, ...
-     sprintf('\\leftarrow Max Efficiency:  %.2f%%,  %.4f N·m', ...
-             eta_max * 100, tau_Emax), ...
+text(tau_Emax, eta_max, sprintf('\\leftarrow Max Efficiency = %.3f N·m', tau_Emax), ...
      'FontWeight','bold', 'HorizontalAlignment','left', 'VerticalAlignment','bottom');
-
 

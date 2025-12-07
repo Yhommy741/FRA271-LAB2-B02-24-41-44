@@ -10,9 +10,9 @@ tau_st_6  = 0.1025;
 
 % Assume no-load speed scales linearly with voltage.
 % --- CHANGE THIS TO YOUR ACTUAL MOTOR NO-LOAD SPEED ---
-omega_nl_12 = 500;    % rad/s (example)
-omega_nl_9  = omega_nl_12 * (9/12);
-omega_nl_6  = omega_nl_12 * (6/12);
+omega_nl_12 = 168.59;    % rad/s (example)
+omega_nl_9  = 99.80;
+omega_nl_6  = 44.56;
 
 % ------------------
 % Torque vector

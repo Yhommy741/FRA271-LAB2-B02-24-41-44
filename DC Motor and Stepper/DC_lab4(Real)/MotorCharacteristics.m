@@ -56,7 +56,7 @@ i_legend_str = sprintf('$i = %.4f\\tau^2 %+.4f\\tau %+.4f  (R^2 = %.4f)$', ...
 %% ---------------------- 4. Plotting Results ------------------------------
 
 figure('Color','w','Position',[200 100 800 800]);
-sgtitle(sprintf('DC Motor 12V Experimental Characteristics (Updated Data)'), 'FontSize', 16, 'FontWeight','bold');
+sgtitle(sprintf('DC Motor 12V Experimental Characteristics'), 'FontSize', 16, 'FontWeight','bold');
 
 % --- (1) Speed–Torque Characteristic ---
 subplot(2,2,1);

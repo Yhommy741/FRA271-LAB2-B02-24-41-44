@@ -23,7 +23,7 @@ f = (0:(N/2)) * (fs / N);
 % --- 6. พล็อตกราฟสเปกตรัมความถี่ ---
 figure;
 plot(f, P1);
-title('Frequency Spectrum (Magnitude 0-2)');
+title('Angular Velocity of DC Motor 12V in Frequency Domain (FFT)');
 xlabel('Frequency (Hz)');
 ylabel('Magnitude');
 grid on;
@@ -36,7 +36,7 @@ ylim([0, 50]);
 % (ทางเลือก) พล็อตกราฟสัญญาณดั้งเดิม
 figure;
 plot(time, signal);
-title('Original Signal (Time Domain)');
+title('Angular Velocity of DC Motor 12V');
 xlabel('Time (s)');
-ylabel('Amplitude');
+ylabel('Anugular Velocity \omega (rad/s)');
 grid on;
